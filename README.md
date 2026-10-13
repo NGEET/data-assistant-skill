@@ -64,11 +64,23 @@ relative to their own location, so they work from any skills directory.
 ### ESS-DIVE token (optional)
 
 Without a token, the skill still works, but rate limits apply and private datasets are unavailable.
-Get a token from your [ESS-DIVE account settings](https://data.ess-dive.lbl.gov/), then put it in a `.env` file:
+
+To get a token:
+
+1. Go to [data.ess-dive.lbl.gov](https://data.ess-dive.lbl.gov/) and click **Sign in with ORCID**. If you don't have an ORCID iD,
+   [register for a free one](https://orcid.org/register).
+2. Click your name in the top-right corner and select **My Profile**.
+3. Go to **Settings > Authentication Token**.
+4. On the **Token** tab, click **Copy**.
+
+Then put it in a `.env` file in your project:
 
 ```bash
 echo 'ESSDIVE_API_TOKEN=your-token-here' > your-project/.env
 ```
+
+Tokens expire. If you get a "You do not have authorized access" error, copy a new token and update `.env`.
+For more details, see the [ESS-DIVE Dataset API docs](https://docs.ess-dive.lbl.gov/programmatic-tools/ess-dive-dataset-api).
 
 The scripts look for `.env` in this order: OS environment, `<project>/.env`, the skill folder, its parent
 skills folder, and then the agent folder (e.g. `.claude/` or `.agents/`).
