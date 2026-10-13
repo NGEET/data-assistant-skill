@@ -1,0 +1,6 @@
+pandas>=1.5
+httpx>=0.24
+python-dotenv>=1.0
+matplotlib>=3.7
+seaborn>=0.12
+numpy>=1.24
