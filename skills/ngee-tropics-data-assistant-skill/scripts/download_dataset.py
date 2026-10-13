@@ -16,9 +16,9 @@ Environment:
 .env file resolution order:
     1. OS environment
     2. <project-root>/.env
-    3. .claude/skills/ngee-tropics-data-assistant-skill/.env
-    4. .claude/skills/.env
-    5. .claude/.env
+    3. <skill-dir>/.env
+    4. <skill-dir>/../.env      (e.g. .claude/skills/.env or .agents/skills/.env)
+    5. <skill-dir>/../../.env   (e.g. .claude/.env or .agents/.env)
 """
 
 import argparse

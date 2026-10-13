@@ -1,9 +1,9 @@
 # NGEE-Tropics Data Assistant Skill
 
-An [Agent Skill](https://docs.claude.com/en/docs/claude-code/skills) that lets Claude find, inspect, download, and analyze
+An [Agent Skill](https://agentskills.io) that lets AI coding agents such as Claude Code and Codex find, inspect, download, and analyze
 [NGEE-Tropics](https://ngee-tropics.lbl.gov/) datasets published on [ESS-DIVE](https://ess-dive.lbl.gov/).
 
-Ask Claude something like *"What soil carbon data is available from Manaus?"* or *"Download the LAI datasets from Panama and plot them"*, and the skill does the following:
+Ask your agent something like *"What soil carbon data is available from Manaus?"* or *"Download the LAI datasets from Panama and plot them"*, and the skill does the following:
 
 1. Asks a couple of clarifying questions: what data you need and what you want to do with it.
 2. Searches a bundled catalog of about 143 NGEE-Tropics datasets. Searching makes no API calls.
@@ -14,7 +14,7 @@ Ask Claude something like *"What soil carbon data is available from Manaus?"* or
 
 ```
 skills/ngee-tropics-data-assistant-skill/
-├── SKILL.md                         # instructions Claude follows
+├── SKILL.md                         # instructions the agent follows
 ├── assets/ngee_tropics_datasets.csv # the dataset catalog (single source of truth)
 ├── references/                      # catalog design, CSV schema, session workflow
 └── scripts/
@@ -30,22 +30,36 @@ skills/ngee-tropics-data-assistant-skill/
 
 ### Requirements
 
-- [Claude Code](https://docs.claude.com/en/docs/claude-code) (or another client that supports Agent Skills)
+- An agent that supports Agent Skills (`SKILL.md`), e.g. [Claude Code](https://docs.claude.com/en/docs/claude-code) or [Codex](https://github.com/openai/codex)
 - Python 3.10+ and [uv](https://docs.astral.sh/uv/getting-started/installation/)
 - *(Optional, recommended)* An ESS-DIVE API token
 
 ### Add the skill to a project
 
-The skill's instructions use paths relative to `.claude/skills/` in your project, so install it there:
+Copy the skill folder into your agent's skills directory:
+
+| Agent | Project-level | User-level (all projects) |
+|---|---|---|
+| Claude Code | `.claude/skills/` | `~/.claude/skills/` |
+| Codex | `.agents/skills/` | `~/.agents/skills/` |
+
+For example, at the project level:
 
 ```bash
 git clone https://github.com/NGEET/data-assistant-skill.git
+
+# Claude Code
 mkdir -p your-project/.claude/skills
 cp -r data-assistant-skill/skills/ngee-tropics-data-assistant-skill your-project/.claude/skills/
+
+# Codex
+mkdir -p your-project/.agents/skills
+cp -r data-assistant-skill/skills/ngee-tropics-data-assistant-skill your-project/.agents/skills/
 ```
 
-Then start Claude Code from `your-project/`. Claude creates a shared `.venv/` in the project root and installs
-the dependencies from `scripts/requirements.txt` the first time the skill runs.
+Then start your agent from `your-project/`. The first time the skill runs, the agent creates a shared `.venv/` in the
+project root and installs the dependencies from `scripts/requirements.txt`. The skill's scripts find their files
+relative to their own location, so they work from any skills directory.
 
 ### ESS-DIVE token (optional)
 
@@ -56,21 +70,22 @@ Get a token from your [ESS-DIVE account settings](https://data.ess-dive.lbl.gov/
 echo 'ESSDIVE_API_TOKEN=your-token-here' > your-project/.env
 ```
 
-The scripts look for `.env` in this order: OS environment, `<project>/.env`,
-`.claude/skills/ngee-tropics-data-assistant-skill/.env`, `.claude/skills/.env`, `.claude/.env`.
+The scripts look for `.env` in this order: OS environment, `<project>/.env`, the skill folder, its parent
+skills folder, and then the agent folder (e.g. `.claude/` or `.agents/`).
 Don't commit `.env`.
 
 ## Usage
 
-### With Claude
+### With your agent
 
-Open Claude Code in your project and ask in plain language. For example:
+Open your agent in the project and ask in plain language. For example:
 
 - "What NGEE-Tropics datasets have water table measurements?"
 - "Find leaf area index data from Panama published after 2020"
 - "Download soil carbon datasets from Brazil and summarize them"
 
-Claude invokes the skill automatically. You can also call it directly with `/ngee-tropics-data-assistant-skill`.
+The agent picks up the skill automatically when your request matches it. You can also call it by name:
+`/ngee-tropics-data-assistant-skill` in Claude Code, or `$ngee-tropics-data-assistant-skill` in Codex.
 
 Each request writes its output to its own folder:
 
@@ -86,7 +101,7 @@ sessions/20260305_143022_soil-carbon-brazil-2020/
 ### Running the scripts directly
 
 ```bash
-SKILL=.claude/skills/ngee-tropics-data-assistant-skill
+SKILL=.claude/skills/ngee-tropics-data-assistant-skill   # or .agents/skills/... for Codex
 
 # Search the catalog (no network). Filters: --name --description --keywords --creator
 # --variable --spatial --start-date --end-date; -v for detail; --list-columns
