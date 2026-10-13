@@ -48,7 +48,7 @@ uv venv .venv
 
 # Install skill dependencies
 uv pip install --python .venv/bin/python \
-  -r .claude/skills/ngee-tropics-data-assistant-skill/scripts/requirements.txt
+  -r $SKILL_DIR/scripts/requirements.txt
 
 # Convenience alias
 PYTHON=.venv/bin/python
@@ -63,10 +63,10 @@ SESSION=sessions/YYYYMMDD_HHMMSS_your-slug
 mkdir -p $SESSION/data
 
 # Search datasets
-.venv/bin/python .claude/skills/ngee-tropics-data-assistant-skill/scripts/search_datasets.py --name "soil carbon" --verbose
+.venv/bin/python $SKILL_DIR/scripts/search_datasets.py --name "soil carbon" --verbose
 
 # Download dataset to session data folder
-.venv/bin/python .claude/skills/ngee-tropics-data-assistant-skill/scripts/download_dataset.py \
+.venv/bin/python $SKILL_DIR/scripts/download_dataset.py \
   --doi 10.15485/2530733 \
   --output $SESSION/data
 
@@ -84,7 +84,7 @@ import os
 token = os.getenv('ESSDIVE_API_TOKEN', '').strip()
 if not token:
     print('WARNING: ESSDIVE_API_TOKEN not set.')
-    print('  Set in .env, .claude/skills/ngee-tropics-data-assistant-skill/.env, or .claude/.env')
+    print('  Set in <project>/.env or $SKILL_DIR/.env')
     print('  Proceeding unauthenticated (rate limits apply, private datasets unavailable).')
 else:
     print('Token OK')
@@ -94,9 +94,9 @@ else:
 **.env resolution order** (scripts auto-load in this order):
 1. OS environment (`ESSDIVE_API_TOKEN` already exported)
 2. `<project-root>/.env`  ← most common location
-3. `.claude/skills/ngee-tropics-data-assistant-skill/.env`
-4. `.claude/skills/.env`
-5. `.claude/.env`
+3. `$SKILL_DIR/.env`
+4. `$SKILL_DIR/../.env` (the skills folder, e.g. `.claude/skills/` or `.agents/skills/`)
+5. `$SKILL_DIR/../../.env` (e.g. `.claude/.env` or `.agents/.env`)
 
 ## Saving Generated Code
 

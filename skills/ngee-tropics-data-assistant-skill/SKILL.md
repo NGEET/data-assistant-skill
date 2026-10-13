@@ -15,6 +15,10 @@ The network is only touched to keep it current, via `catalog.py sync` (or `build
 
 Steady state to refresh: ~5 calls + 1 per change. See `references/catalog-design.md`.
 
+## Paths
+
+`$SKILL_DIR` below means the directory containing this `SKILL.md` — e.g. `.claude/skills/ngee-tropics-data-assistant-skill` (Claude Code) or `.agents/skills/ngee-tropics-data-assistant-skill` (Codex and other agents). Substitute the actual path, or prefix each command with `SKILL_DIR=<path>` (shell variables may not persist between commands).
+
 ## Pre-flight Checklist
 
 Before doing anything else, run through these in order:
@@ -25,7 +29,7 @@ Before doing anything else, run through these in order:
 ```
 (Ensure `.venv` exists first — see Session Workflow below.)
 If missing, warn the user:
-> "ESSDIVE_API_TOKEN is not set. Proceeding without authentication (rate limits apply, private datasets unavailable). Set it in `.env` or `.claude/skills/ngee-tropics-data-assistant-skill/.env` and restart."
+> "ESSDIVE_API_TOKEN is not set. Proceeding without authentication (rate limits apply, private datasets unavailable). Set it in `.env` or `$SKILL_DIR/.env` and restart."
 
 Do NOT proceed silently — always surface this warning before any downloads.
 
@@ -54,22 +58,22 @@ Every request creates a unique session folder. All generated files, downloaded d
 # 1. Create root virtualenv (once, shared across sessions)
 uv venv .venv
 uv pip install --python .venv/bin/python \
-  -r .claude/skills/ngee-tropics-data-assistant-skill/scripts/requirements.txt
+  -r $SKILL_DIR/scripts/requirements.txt
 
 # 2. Set session path and create it
 SESSION=sessions/YYYYMMDD_HHMMSS_your-slug
 mkdir -p $SESSION/data
 
 # 3. Search datasets (reads the assets CSV, 0 API calls; add --sync to refresh first)
-.venv/bin/python .claude/skills/ngee-tropics-data-assistant-skill/scripts/search_datasets.py \
+.venv/bin/python $SKILL_DIR/scripts/search_datasets.py \
   --name "soil carbon" --verbose
 
 # 4. Download a dataset (DOI from search results)
-.venv/bin/python .claude/skills/ngee-tropics-data-assistant-skill/scripts/download_dataset.py \
+.venv/bin/python $SKILL_DIR/scripts/download_dataset.py \
   --doi 10.15485/2530733 --output $SESSION/data
 
 # (optional) Refresh the catalog from ESS-DIVE — incremental, ~5 calls + 1 per change
-.venv/bin/python .claude/skills/ngee-tropics-data-assistant-skill/scripts/catalog.py sync
+.venv/bin/python $SKILL_DIR/scripts/catalog.py sync
 ```
 
 ## Workflow
