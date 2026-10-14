@@ -15,6 +15,7 @@ Ask your agent something like *"What soil carbon data is available from Manaus?"
 ```
 skills/ngee-tropics-data-assistant-skill/
 ├── SKILL.md                         # instructions the agent follows
+├── VERSION                          # published skill version (semver)
 ├── assets/ngee_tropics_datasets.csv # the dataset catalog (single source of truth)
 ├── references/                      # catalog design, CSV schema, session workflow
 └── scripts/
@@ -24,6 +25,35 @@ skills/ngee-tropics-data-assistant-skill/
     ├── build_catalog.py             # wrapper around `catalog.py sync`
     ├── test_search_datasets.py
     └── requirements.txt
+```
+
+## Versioning
+
+This repository uses semantic versions for the published skill package.
+
+- Current version: **v0.1.0**
+- Skill version file: `skills/ngee-tropics-data-assistant-skill/VERSION`
+- Change history: [CHANGELOG.md](CHANGELOG.md)
+
+When you publish updates, bump `VERSION` and add a matching changelog entry.
+
+## Google Drive mirror layout
+
+If you keep a Google Drive copy for sharing, mirror the same folder structure and version tag so reviewers can compare Drive and GitHub one-to-one.
+
+```
+GDrive/
+└── data-assistant-skill/
+    └── v0.1.0/
+        ├── README.md
+        ├── CHANGELOG.md
+        └── skills/
+            └── ngee-tropics-data-assistant-skill/
+                ├── SKILL.md
+                ├── VERSION
+                ├── assets/
+                ├── references/
+                └── scripts/
 ```
 
 ## Installation
