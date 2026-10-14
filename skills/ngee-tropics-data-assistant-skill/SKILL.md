@@ -1,5 +1,6 @@
 ---
 name: ngee-tropics-data-assistant-skill
+version: 0.1.0
 description: Explore, search, and download NGEE Tropics tropical ecosystem datasets from ESS-DIVE. Use when asked about NGEE data, tropical forest datasets, soil carbon, LAI, hydrology, or ESS-DIVE downloads.
 ---
 
