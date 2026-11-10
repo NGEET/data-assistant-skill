@@ -37,25 +37,6 @@ This repository uses semantic versions for the published skill package.
 
 When you publish updates, bump `VERSION` and add a matching changelog entry.
 
-## Google Drive mirror layout
-
-If you keep a Google Drive copy for sharing, mirror the same folder structure and version tag so reviewers can compare Drive and GitHub one-to-one.
-
-```
-GDrive/
-└── data-assistant-skill/
-    └── v0.1.0/
-        ├── README.md
-        ├── CHANGELOG.md
-        └── skills/
-            └── ngee-tropics-data-assistant-skill/
-                ├── SKILL.md
-                ├── VERSION
-                ├── assets/
-                ├── references/
-                └── scripts/
-```
-
 ## Installation
 
 ### Requirements
@@ -91,9 +72,7 @@ Then start your agent from `your-project/`. The first time the skill runs, the a
 project root and installs the dependencies from `scripts/requirements.txt`. The skill's scripts find their files
 relative to their own location, so they work from any skills directory.
 
-### ESS-DIVE token (optional)
-
-Without a token, the skill still works, but rate limits apply and private datasets are unavailable.
+### ESS-DIVE token
 
 To get a token:
 
