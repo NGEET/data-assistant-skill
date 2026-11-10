@@ -43,7 +43,7 @@ When you publish updates, bump `VERSION` and add a matching changelog entry.
 
 - An agent that supports Agent Skills (`SKILL.md`), e.g. [Claude Code](https://docs.claude.com/en/docs/claude-code) or [Codex](https://github.com/openai/codex)
 - Python 3.10+ and [uv](https://docs.astral.sh/uv/getting-started/installation/)
-- *(Optional, recommended)* An ESS-DIVE API token
+- An ESS-DIVE API token
 
 ### Add the skill to a project
 
